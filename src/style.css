@@ -3,7 +3,24 @@
     padding: 0px;
     box-sizing: border-box;
 
-    font-family: 'Courier New', Courier, monospace;
+    font-family:Arial, Helvetica, sans-serif;
+
+}
+
+
+
+.login-panel{
+    margin: 100px auto;
+    border: 1px solid #888;
+    min-width: 400px;
+    width: 400px;
+    height: 500px;
+    border-radius: 5px;
+}
+
+.login-head{
+    height: 30px;
+    width: 100%;
 
 }
 
