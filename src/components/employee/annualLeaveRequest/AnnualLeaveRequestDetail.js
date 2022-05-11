@@ -1,5 +1,9 @@
+import SectionContent from "../../SectionContent";
+
 export default function AnnualLeaveRequestDetail(){
     return (
-        <h1>Employee AnnualLeaveRequestDetail</h1>
+        <SectionContent content={
+            <h1>AnnualLeaveRequestDetail</h1>
+        }/>
     );
 }

@@ -1,16 +1,15 @@
+import "../style.css";
 
 
-export default function Index(){
 
+export default function SectionContent({content}){
 
     return (
-
         <section className="section-content">
             <div className="container">
-                Employee Index Page...
-
+                {content}
             </div>
         </section>
-
     );
+    
 }

@@ -10,7 +10,7 @@ import {createSlice} from "@reduxjs/toolkit";
 //username
 //password
 const initialState = {
-    type: null,
+    type: 1,
     isLogged: false,
     userId: null,
     username: "",

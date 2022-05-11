@@ -4,24 +4,261 @@
     box-sizing: border-box;
 
     font-family:Arial, Helvetica, sans-serif;
-
 }
 
+.container{
+    width: 1140px;
+    height: 100%;
+    margin: 0 auto;
+    border: 1px solid #888;
+    padding: 20px;
+}
 
-
+/* FORM CSS */
 .login-panel{
     margin: 100px auto;
-    border: 1px solid #888;
     min-width: 400px;
-    width: 400px;
-    height: 500px;
+    width: 300px;
+    height: 350px;
     border-radius: 5px;
+    background-color: #f8f8f8;
+    border: 1px solid #dedede;
 }
 
 .login-head{
-    height: 30px;
+    height: 50px;
     width: 100%;
-
+    display: flex;
+    flex-direction: row;
 }
 
 
+.login-menu{
+    width: 50%;
+    height: 100%;
+    padding: 15px;
+    text-align: center;
+    position: relative;
+    
+    
+}
+
+.login-menu:hover{
+    cursor: pointer;
+    
+    
+}
+
+.login-menu-active:first-child{
+    border-right: 1px solid #dedede;
+    border-bottom: 1px solid #dedede;
+}
+
+.login-menu-active:last-child{
+    border-left: 1px solid #dedede;
+    border-bottom: 1px solid #dedede;
+}
+
+.login-body{
+    width: 100%;
+    height: calc(100% - 80px);
+    padding-top: 40px;
+}
+
+.login-footer{
+    border-top: 1px solid #dedede;
+    width: 100%;
+    height: 30px;
+    text-align: center;
+    padding-left: 10px;
+    padding-top: 7px;
+}
+
+.login-footer p{
+    color: #888;
+    font-size: 12px;
+}
+
+.form-label{
+    display: block;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left!important;
+    width: 70%;
+}
+
+.form-input{
+    display: block;
+    height: 30px;
+    min-width: 275px;
+    width: 70%;
+    padding-left: 10px;
+    font-size: 16px;
+    margin-top: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    
+    border-radius: 3px;
+
+    border: 1px solid #888;
+    
+}
+
+.login-button{
+    display: block;
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 150px;
+    height: 30px;
+    text-transform: uppercase;
+}
+
+.login-button{
+    cursor: pointer;
+}
+/* END FORM CSS */
+
+
+/* MENU CSS*/
+
+header{
+    display: flex;
+    flex-direction: row;
+    height: 50px;
+    width: 100%;
+    min-width: 1140px;
+    background-color: #f8f8f8;
+    border-bottom: 2px solid #888;    
+}
+
+.header-info{
+    width: 30%;
+    min-width: 200px;
+    height: 100%;
+    text-align: center;
+    padding-top: 15px;
+}
+
+.header-info p{
+    font-size: 14px;
+}
+
+nav{
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    min-width: 400px;
+    width: 70%;
+    height: 100%;
+}
+
+nav a{
+    display: block;
+    height: 100%;
+    width: 200px;
+    padding-top: 15px;
+    text-align: center;
+    color: #000;
+    position: relative;
+    text-decoration: none;
+}
+
+nav a:after{
+    content: '';
+    display: block;
+    width: 1px;
+    height: 30px;
+    background-color: #dedede;
+    position: absolute;
+    top: 10px;
+    right: 0px;
+    border-radius: 5px;
+}
+nav a:last-child:after{
+    content: '';
+    width: 0px;
+    height: 0px;
+}
+
+nav a:hover{
+    font-weight: bolder;
+    border-radius: 2px;
+}
+
+.active-menu{
+    font-weight: bolder;
+    border-radius: 1px;
+}
+
+/* END MENU CSS */
+
+
+section.section-content{
+    margin: 0px auto;
+    width: 100%;
+    height: 650px;
+    padding: 30px;
+}
+
+
+form{
+    padding: 15px;
+    margin-top: 50px;
+    text-align: center;
+
+}
+
+.button-group{
+    text-align: center;
+    width: 70%;
+    height: auto;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+}
+
+.form-button{
+    display: inline-block;
+    min-width: 100px;
+    min-height: 40px;
+    font-size: 16px;
+    margin: 10px auto 0px auto;
+    
+}
+
+.form-button:hover{
+    cursor: pointer;
+}
+
+.default-btn{
+    background-color: #dedede;
+    border: 1px solid #f8f8f8;
+    color: #000;
+}
+
+
+.table{
+    min-width: 600px;
+    width: 85%;
+    height: 500px;
+    border: 1px solid #888;
+}
+
+
+.table-head{
+    width: 100%;
+    height: 10%;
+    min-height: 30px;
+    border: 1px solid #888;
+}
+
+.table-body{
+    
+}
+
+.table-footer{
+
+}
