@@ -1,18 +1,23 @@
-
-
 import { useEffect, useState } from "react";
-
+import { useSelector } from "react-redux";
 //CSS
 import "../../../style.css";
 //END CSS
+import loadingGifURL from "../../../assets/img/loading.gif";
 
 import SectionContent from "../../SectionContent";
 
 
 import { dateFormatter } from "../../../app/helper";
 
+import axios from "axios";
+
+import CONFIG from "../../../app/"
+
 
 export default function AnnualLeaveRequest() {
+
+    const {type, userId, username, password} = useSelector(state => state.userReducer);
 
     const today = new Date(Date.now());
 
@@ -23,7 +28,7 @@ export default function AnnualLeaveRequest() {
     const [startDate, setStartDate] = useState(startDateFormatted);
     const [endDate, setEndDate] = useState(endDateFormatted);
     const [requestDay, setRequestDay] = useState(1);
-
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         dateFixer(startDate, endDate);
@@ -38,7 +43,6 @@ export default function AnnualLeaveRequest() {
 
         if (diff <= 0) {
             alert("İzin başlangıç tarihi, izin bitiş tarihinden önce olmalıdır.");
-
 
             asDateEndDate.setDate(asDateEndDate.getDate() - 1);
 
@@ -83,6 +87,26 @@ export default function AnnualLeaveRequest() {
     const submit = (e) => {
         e.preventDefault();
         //gerekli kontroller...
+        setLoading(true);
+        axios.post(CONFIG.API_PATHS.EMPLOYEE.POST_REQUEST(type, username, password),
+        {
+            employeeId: userId,
+            state: 0,
+            startDate: startDate,
+            endDate: endDate,
+            day: requestDay,
+            requestDate: new Date(Date.now())
+        })
+        .then(response => {
+            setLoading(false);
+            const {data, message} = response.data;
+            alert(message);
+        })
+        .catch(error => {
+            setLoading(false);
+            alert("İzin talebi oluşturulurken bir hata meydana geldi. Lütfen sonra tekrar bekleyiniz.");
+        });
+
     }
 
     const clear = () => {
@@ -108,7 +132,7 @@ export default function AnnualLeaveRequest() {
                     <input id="requestDay" name="requestDay" type="number" className="form-input" min="1" max="1000" value={requestDay} onChange={onChangeInput} />
                     <div className="button-group">
                         <button type="button" id="clearButton" name="clearButton" className="form-button default-btn" onClick={clear}>Temizle</button>
-                        <button type="submit" className="form-button default-btn">Gönder</button>
+                        <button type="submit" className="form-button default-btn">{(loading) ? <img className="loading" src={loadingGifURL} /> : null} Gönder</button>
                     </div>
                 </form>
             </>

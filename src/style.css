@@ -246,8 +246,7 @@ form{
     width: 85%;
     height: 500px;
     margin: 10px auto 0px auto;
-    
-
+    box-sizing: border-box!important;
 }
 
 
@@ -353,7 +352,7 @@ form{
 
 
 .table-footer{
-
+    border-bottom: 1px solid #888;
 }
 
 
@@ -361,4 +360,5 @@ form{
     display: inline-block;
     width: 16px;
     height: 16px;
+    
 }

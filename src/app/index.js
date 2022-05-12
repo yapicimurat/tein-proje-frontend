@@ -67,6 +67,9 @@ const CONFIG = {
             },
             GET_ANNUAL_REQUESTS: () => {
                 return `${BASE_URL}annual_request/`;
+            },
+            POST_REQUEST: (type, username, password) => {
+                return `${BASE_URL}annual_request/create/${type}/${username}/${password}`;
             }
         }
     },

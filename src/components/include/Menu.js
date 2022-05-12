@@ -32,7 +32,7 @@ export default function Menu() {
 
     
     if (type === USER_TYPE.EMPLOYEE)
-        menu = (
+        menu = ( 
             <>
                 <NavLink
                     end={true}
@@ -73,6 +73,7 @@ export default function Menu() {
         <header>
             <div className="header-info">
                 <p className="menu-welcome">Hoşgeldiniz, {username}</p>
+                <small style={{fontSize: "10px", color: "#ff0000", fontStyle: "italic"}}>{(type === 0) ? "[ADMIN]" : "[PERSONEL]"}</small>
             </div>
             <nav className="menu">
                 {menu}
