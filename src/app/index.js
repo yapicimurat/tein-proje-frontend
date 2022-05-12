@@ -19,13 +19,38 @@ const USER_TYPE = {
     ADMIN: 0,
     EMPLOYEE: 1
 };
+
+// private enum State{
+//     WAITING,
+//     ACCEPTED,
+//     DENIED
+// }
+
+const ANNUAL_LEAVE_REQUEST_STATE_STYLES = {
+    "WAITING": "state-waiting",
+    "ACCEPTED": "state-accepted",
+    "DENIED": "state-denied"
+}
+
+const ANNUAL_LEAVE_REQUEST_STATE_TR = {
+    "WAITING": "ONAY BEKLİYOR",
+    "ACCEPTED": "ONAYLANDI",
+    "DENIED": "REDDEDİLDİ"
+}
+
+
 const ROUTE_PATHS = {
     LOGIN: "/",
     EMPLOYEE: {
         INDEX: "/employee",
-        ANNUAL_LEAVE_REQUEST: "/employee/annualLeaveRequest",
-        ANNUAL_LEAVE_REQUESTS: "/employee/annualLeaveRequests",
-        ANNUAL_LEAVE_REQUEST_DETAIL: "/employee/annualLeaveRequestDetail"
+        GET_ANNUAL_LEAVE_REQUEST: "/employee/annualLeaveRequest",
+        GET_ANNUAL_LEAVE_REQUESTS: "/employee/annualLeaveRequests",
+        GET_ANNUAL_LEAVE_REQUEST_DETAIL: "/employee/annualLeaveRequestDetail",
+        CREATE_ANNUAL_LEAVE_REQUEST: "employee/annualLeaveRequest"
+    },
+    ADMIN:{
+        INDEX: "/admin",
+        //DEVAMINI YAZICAM
     }
 };
 
@@ -39,6 +64,9 @@ const CONFIG = {
             },
             GET_ANNUAL_REQUEST_BY_EMPLOYEE_ID: (employeeId) => {
                 return `${BASE_URL}annual_request/getAllByEmployeeId/${employeeId}/`;
+            },
+            GET_ANNUAL_REQUESTS: () => {
+                return `${BASE_URL}annual_request/`;
             }
         }
     },
@@ -46,13 +74,13 @@ const CONFIG = {
         {
             path: "/", // hem adminin hemde personelin giris yapabilecegi login sayfasi (eger giris yapildiysa gerekli index'e yonlendirme yapar)
             component: <Login />,
-            needAuth: true,
+            needAuth: false,
             exact: true
         },
         {
             path: "/login", // -> hem adminin hemde personelin giris yapabilecegi login sayfasi (eger giris yapildiysa gerekli index'e yonlendirme yapar)
             component: <Login />,
-            needAuth: true,
+            needAuth: false,
             exact: true
         },
         {
@@ -127,5 +155,7 @@ export default CONFIG;
 export {
     USER_TYPE,
     ROUTE_PATHS,
-    BASE_URL
+    BASE_URL,
+    ANNUAL_LEAVE_REQUEST_STATE_STYLES,
+    ANNUAL_LEAVE_REQUEST_STATE_TR
 };

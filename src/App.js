@@ -20,25 +20,37 @@ import CONFIG, { USER_TYPE } from "./app/";
 
 export default function App() {
 
-  //const {isLogged, type} = useSelector(state => state.userReducer);
-  
-  
+  const { isLogged } = useSelector(state => state.userReducer);
+
+
   return (
     <Routes>
       {
         CONFIG.ROUTES.map((route, index) => {
-          return <Route
-            key={index}
-            exact={route.exact}
-            path={route.path}
-            element={route.component}
+          if ((route.needAuth && !isLogged)) {
+            return <Route
+              key={index}
+              exact={route.exact}
+              path={route.path}
+              element={route.negativeComponent}
             />
+          }else{
+            return <Route
+              key={index}
+              exact={route.exact}
+              path={route.path}
+              element={route.component}
+            />
+          }
+
+          
+
         })
       }
-      
+
     </Routes>
   );
-  
+
 
 }
 

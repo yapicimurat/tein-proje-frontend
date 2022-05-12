@@ -1,10 +1,10 @@
 import "../../style.css";
 import { USER_TYPE } from "../../app/";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import clsx from "clsx";
 import loadingGifURL from "../../assets/img/loading.gif";
-import CONFIG, {ROUTE_PATHS} from "../../app/";
+import CONFIG, { ROUTE_PATHS } from "../../app/";
 
 import { useDispatch } from "react-redux";
 import { setUser } from "../../features/user";
@@ -19,15 +19,18 @@ export default function Login() {
 
     const [loading, setLoading] = useState(false);
 
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const loginTypeHandler = (type) => {
         setLoginType(type);
     };
 
     const changeHandler = (e) => {
-        if(e.target.name === "username"){
+        if (e.target.name === "username") {
             setUsername(e.target.value);
         }
-        else if(e.target.name === "password"){
+        else if (e.target.name === "password") {
             setPassword(e.target.value);
         }
     };
@@ -38,40 +41,40 @@ export default function Login() {
             alert("Lütfen alanları eksiksiz giriniz.");
         } else {
             setLoading(true);
-
             axios.get(CONFIG.API_PATHS.EMPLOYEE.LOGIN(username, password))
-            .then(response => {
-                setLoading(false);
-                const data = response.data;
-                alert(data.message);
-                if(data.data === true){
-                    //giris basarili...
-                    if(loginType === USER_TYPE.EMPLOYEE){
-                        setLoading(false);
-                        //redux verilerini işle
-                        useDispatch(setUser({
+                .then(response => {
+                    setLoading(false);
+                    const data = response.data;
+                    alert(data.message);
+                    if (data.data !== null) {
+                        //giris basarili...
+                        if (loginType === USER_TYPE.EMPLOYEE) {
+                            //redux verilerini işle
+                            navigate(ROUTE_PATHS.EMPLOYEE.INDEX);
+                        } else if (loginType === USER_TYPE.ADMIN) {
+                            navigate(ROUTE_PATHS.ADMIN.INDEX);
+                        }
+
+                        dispatch(setUser({
                             type: loginType,
                             userId: data.data.id,
                             username: data.data.username,
                             password: data.data.password,
                             isLogged: true
                         }));
-                    }else if(loginType === USER_TYPE.ADMIN){
-                            
                     }
-                }
-            })
-            .catch(error => {
-                setLoading(false);
-                alert("Bir hata meydana geldi. Lütfen sonra tekrar deneyiniz.");
-            });
+                })
+                .catch(error => {
+                    setLoading(false);
+                    alert("Bir hata meydana geldi. Lütfen sonra tekrar deneyiniz.");
+                });
 
         }
     };
 
     return (
         <>
-            <h1 style={{marginTop: "20px" ,display: "block", width: "fit-content", margin: "0 auto" }}>Sisteme Hoşgeldiniz</h1>
+            <h1 style={{ marginTop: "20px", display: "block", width: "fit-content", margin: "0 auto" }}>Sisteme Hoşgeldiniz</h1>
             <div className="login-panel">
                 <div className="login-head">
                     <div className={clsx({ "login-menu": true, "login-menu-active": (loginType === USER_TYPE.EMPLOYEE) })}>
@@ -90,7 +93,7 @@ export default function Login() {
                         <label className="form-label">Parola</label>
                         <input id="password" name="password" type="password" value={password} onChange={changeHandler} className="form-input" />
 
-                        <button type="submit" className="login-button"> {(loading) ? <img className="loading" src={loadingGifURL}/> : null} giriş yap</button>
+                        <button type="submit" className="login-button"> {(loading) ? <img className="loading" src={loadingGifURL} /> : null} giriş yap</button>
                     </form>
 
                 </div>

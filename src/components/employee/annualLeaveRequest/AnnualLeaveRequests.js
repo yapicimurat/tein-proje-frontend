@@ -1,9 +1,34 @@
 
 import SectionContent from "../../SectionContent"
-
-
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import CONFIG, {ANNUAL_LEAVE_REQUEST_STATE_STYLES, ANNUAL_LEAVE_REQUEST_STATE_TR} from "../../../app/";
 import "../../../style.css";
+import { dateLocaleFormatter } from "../../../app/helper";
 export default function AnnualLeaveRequests() {
+
+    const [annualLeaveRequests, setAnnualLeaveRequests] = useState([]);
+    const [isError, setIsError] = useState(false);
+
+    const userId = useSelector(state => state.userReducer.userId);
+
+    useEffect(() => {
+        axios.get(CONFIG.API_PATHS.EMPLOYEE.GET_ANNUAL_REQUEST_BY_EMPLOYEE_ID(userId))
+            .then(response => {
+                const { error, message, data } = response.data;
+                if (error) setIsError(true);
+                else {
+                    setAnnualLeaveRequests(data);
+                }
+
+            })
+            .catch(error => {
+                if (error) setIsError(true);
+            });
+
+    },[]);
+
 
     return <SectionContent content={
         <>
@@ -20,79 +45,22 @@ export default function AnnualLeaveRequests() {
                 </div>
 
                 <div className="table-body">
-                    <div className="table-row">
-                        <ul>
-                            <li>11.05.2022</li>
-                            <li>11.05.2022</li>
-                            <li>19.05.2022</li>
-                            <li>8 Gün</li>
-                            <li className="state state-waiting">ONAY BEKLİYOR</li>
-                        </ul>
-                    </div>
-                    <div className="table-row">
-                        <ul>
-                            <li>11.05.2022</li>
-                            <li>11.05.2022</li>
-                            <li>19.05.2022</li>
-                            <li>8 Gün</li>
-                            <li className="state state-accepted">ONAYLANDI</li>
-                        </ul>
-                    </div>
-                    <div className="table-row">
-                        <ul>
-                            <li>11.05.2022</li>
-                            <li>11.05.2022</li>
-                            <li>19.05.2022</li>
-                            <li>8 Gün</li>
-                            <li className="state state-waiting">ONAY BEKLİYOR</li>
-                        </ul>
-                    </div>
-                    <div className="table-row">
-                        <ul>
-                            <li>11.05.2022</li>
-                            <li>11.05.2022</li>
-                            <li>19.05.2022</li>
-                            <li>8 Gün</li>
-                            <li className="state state-denied">REDDEDİLDİ</li>
-                        </ul>
-                    </div>
-                    <div className="table-row">
-                        <ul>
-                            <li>11.05.2022</li>
-                            <li>11.05.2022</li>
-                            <li>19.05.2022</li>
-                            <li>8 Gün</li>
-                            <li className="state state-waiting">ONAY BEKLİYOR</li>
-                        </ul>
-                    </div>
-                    <div className="table-row">
-                        <ul>
-                            <li>11.05.2022</li>
-                            <li>11.05.2022</li>
-                            <li>19.05.2022</li>
-                            <li>8 Gün</li>
-                            <li className="state state-accepted">ONAYLANDI</li>
-                        </ul>
-                    </div>
-                    <div className="table-row">
-                        <ul>
-                            <li>11.05.2022</li>
-                            <li>11.05.2022</li>
-                            <li>19.05.2022</li>
-                            <li>8 Gün</li>
-                            <li className="state state-waiting">ONAY BEKLİYOR</li>
-                        </ul>
-                    </div>
-                    <div className="table-row">
-                        <ul>
-                            <li>11.05.2022</li>
-                            <li>11.05.2022</li>
-                            <li>19.05.2022</li>
-                            <li>8 Gün</li>
-                            <li className="state state-denied">REDDEDİLDİ</li>
-                        </ul>
-                    </div>
-                    
+                    {
+                        annualLeaveRequests.map((request, index) => {
+                            return (
+                                <div key={index} className="table-row">
+                                    <ul>
+                                        <li>{dateLocaleFormatter(request.requestDate)}</li>
+                                        <li>{dateLocaleFormatter(request.startDate)}</li>
+                                        <li>{dateLocaleFormatter(request.endDate)}</li>
+                                        <li>{request.day}</li>
+                                        <li className={`state ${ANNUAL_LEAVE_REQUEST_STATE_STYLES[request.state]}`}>{ANNUAL_LEAVE_REQUEST_STATE_TR[request.state]}</li>
+                                    </ul>
+                                </div>
+                            );
+                        })
+                   }
+
                 </div>
 
                 <div className="table-footer">

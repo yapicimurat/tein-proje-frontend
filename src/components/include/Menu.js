@@ -1,67 +1,84 @@
 
-
-
 import { useSelector } from "react-redux";
 import { USER_TYPE } from "../../app/";
 import { NavLink } from "react-router-dom";
 import "../../style.css";
 
+import { useDispatch } from "react-redux";
+import { setUser } from "../../features/user";
+
+
 export default function Menu() {
 
     //type -> admin or employee 
-    const type = useSelector(state => state.userReducer.type);
+    const { type, username } = useSelector(state => state.userReducer);
+    const dispatch = useDispatch();
+
+    const logout = () => {
+
+        dispatch(setUser({
+            isLogged: false,
+            userId: null,
+            username: "",
+            password: ""
+        }));
 
 
-    if (type == USER_TYPE.ADMIN) {
-        return (
-            <header>
-                <div className="header-info">
-                    <p>Hoşgeldiniz, Murat YAPICI</p>
-                </div>
-                <nav className="menu">
-                    {/* <div></div> */}
+    };
 
-                    <a href="#">İzin Talepleri</a>
-                    <a href="#">Çıkış Yap</a>
-                </nav>
-            </header>
+
+    let menu = null;
+
+
+    
+    if (type === USER_TYPE.EMPLOYEE)
+        menu = (
+            <>
+                <NavLink
+                    end={true}
+                    to="/employee/annualLeaveRequest"
+                    className={({ isActive }) => (isActive) ? "active-menu" : null}
+                >Yeni İzin Talebi</NavLink>
+
+                <NavLink
+                    end={true}
+                    to="/employee/annualLeaveRequests"
+                    className={({ isActive }) => (isActive) ? "active-menu" : null}
+                >İzin Taleplerim</NavLink>
+
+                <a href="#" onClick={logout}>Çıkış Yap</a>
+            </>
         );
+    else if (type === USER_TYPE.ADMIN)
+        menu = (
+            <>
+                <NavLink
+                    end={true}
+                    to="/admin/annualLeaveRequests"
+                    className={({ isActive }) => (isActive) ? "active-menu" : null}
+                >İzin Talepleri</NavLink>
 
-    } else if (type == USER_TYPE.EMPLOYEE) {
-        return (
-            <header>
-                <div className="header-info">
-                    <p>Hoşgeldiniz, Murat YAPICI</p>
-                </div>
-                <nav className="menu">
-                    <NavLink
-                        end={true}
-                        to="/employee/annualLeaveRequest"
-                        className={({isActive}) => (isActive) ? "active-menu" : null}
-                    >Yeni İzin Talebi</NavLink>
-
-                    <NavLink
-                        end={true}
-                        to="/employee/annualLeaveRequests"
-                        className={({isActive}) => (isActive) ? "active-menu" : null}
-                    >İzin Taleplerim</NavLink>
-
-                    <NavLink
-                        end
-                        to="/employee/sdfdf"
-                    >Çıkış Yap</NavLink>
-
-                </nav>
-            </header>
+                <a href="#" onClick={logout}>Çıkış Yap</a>
+            </>
         );
-
-    } else {
+    else
         return (
             <p>Bir hata meydana geldi...</p>
         );
-    }
 
 
+
+
+    return (
+        <header>
+            <div className="header-info">
+                <p className="menu-welcome">Hoşgeldiniz, {username}</p>
+            </div>
+            <nav className="menu">
+                {menu}
+            </nav>
+        </header>
+    );
 
 
 }

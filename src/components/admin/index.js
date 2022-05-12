@@ -1,9 +1,11 @@
-
+import SectionContent from "../SectionContent";
 
 export default function Index(){
     return (
 
-        <h1>Admin index page...</h1>
+        <SectionContent content={
+            <h1>Admin index...</h1>
+        }/>
 
     );
 }
