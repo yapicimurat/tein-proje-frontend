@@ -3,13 +3,14 @@
 
 import { useSelector } from "react-redux";
 import { USER_TYPE } from "../../app/";
-
+import { NavLink } from "react-router-dom";
 import "../../style.css";
 
 export default function Menu() {
 
     //type -> admin or employee 
     const type = useSelector(state => state.userReducer.type);
+
 
     if (type == USER_TYPE.ADMIN) {
         return (
@@ -19,11 +20,11 @@ export default function Menu() {
                 </div>
                 <nav className="menu">
                     {/* <div></div> */}
+
                     <a href="#">İzin Talepleri</a>
                     <a href="#">Çıkış Yap</a>
                 </nav>
             </header>
-
         );
 
     } else if (type == USER_TYPE.EMPLOYEE) {
@@ -33,9 +34,23 @@ export default function Menu() {
                     <p>Hoşgeldiniz, Murat YAPICI</p>
                 </div>
                 <nav className="menu">
-                    <a href="#" className="active-menu">Yeni İzin Talebi</a>
-                    <a href="#">İzin Taleplerim</a>
-                    <a href="#">Çıkış Yap</a>
+                    <NavLink
+                        end={true}
+                        to="/employee/annualLeaveRequest"
+                        className={({isActive}) => (isActive) ? "active-menu" : null}
+                    >Yeni İzin Talebi</NavLink>
+
+                    <NavLink
+                        end={true}
+                        to="/employee/annualLeaveRequests"
+                        className={({isActive}) => (isActive) ? "active-menu" : null}
+                    >İzin Taleplerim</NavLink>
+
+                    <NavLink
+                        end
+                        to="/employee/sdfdf"
+                    >Çıkış Yap</NavLink>
+
                 </nav>
             </header>
         );

@@ -19,11 +19,29 @@ const USER_TYPE = {
     ADMIN: 0,
     EMPLOYEE: 1
 };
+const ROUTE_PATHS = {
+    LOGIN: "/",
+    EMPLOYEE: {
+        INDEX: "/employee",
+        ANNUAL_LEAVE_REQUEST: "/employee/annualLeaveRequest",
+        ANNUAL_LEAVE_REQUESTS: "/employee/annualLeaveRequests",
+        ANNUAL_LEAVE_REQUEST_DETAIL: "/employee/annualLeaveRequestDetail"
+    }
+};
 
+const BASE_URL = "http://localhost:8081/";
 
 const CONFIG = {
-    BASE_URL: "https://localhost:8081/",
-    API_PATHS: null,
+    API_PATHS: {
+        EMPLOYEE: {
+            LOGIN: (username, password) => {
+                return `${BASE_URL}employee/login/${username}/${password}`;
+            },
+            GET_ANNUAL_REQUEST_BY_EMPLOYEE_ID: (employeeId) => {
+                return `${BASE_URL}annual_request/getAllByEmployeeId/${employeeId}/`;
+            }
+        }
+    },
     ROUTES: [
         {
             path: "/", // hem adminin hemde personelin giris yapabilecegi login sayfasi (eger giris yapildiysa gerekli index'e yonlendirme yapar)
@@ -107,5 +125,7 @@ const CONFIG = {
 export default CONFIG;
 
 export {
-    USER_TYPE
+    USER_TYPE,
+    ROUTE_PATHS,
+    BASE_URL
 };

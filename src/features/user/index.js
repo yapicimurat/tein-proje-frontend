@@ -9,6 +9,7 @@ import {createSlice} from "@reduxjs/toolkit";
 //user id
 //username
 //password
+
 const initialState = {
     type: 1,
     isLogged: false,
@@ -26,7 +27,7 @@ export const userSlice = createSlice({
             state.userId = action.payload.userId;
             state.username = action.payload.username;
             state.password = action.payload.password;
-            return state;
+            state.isLogged = action.payload.isLogged;
         }
     }
 });
