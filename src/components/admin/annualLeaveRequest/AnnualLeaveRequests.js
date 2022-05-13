@@ -12,12 +12,13 @@ export default function AnnualLeaveRequests() {
     const [annualLeaveRequests, setAnnualLeaveRequests] = useState([]);
     const [isError, setIsError] = useState(false);
     const [loading, setLoading] = useState(true);
-    const userId = useSelector(state => state.userReducer.userId);
+    const {userId, type, username, password} = useSelector(state => state.userReducer);
     const [filter, setFilter] = useState("ALL");
 
 
     const [showDetail, setShowDetail] = useState(false);
     const [selectedRequestId, setSelectedRequestId] = useState(-1);
+    const [newState, setNewState] = useState("WAITING");
 
     useEffect(() => {
         axios.get(CONFIG.API_PATHS.ADMIN.GET_ANNUAL_REQUESTS())
@@ -35,17 +36,47 @@ export default function AnnualLeaveRequests() {
                 if (error) setIsError(true);
             });
 
-
     }, []);
 
     const changeHandler = (e) => {
         setFilter(e.target.value);
     }
 
+    //asagidaki fonksiyon detay sayfasindaki durum <select> icin...
+    const changeStateForUpdate = (e) => {
+        setNewState(e.target.value);
+    }
+
 
     const detail = (id) => {
         setSelectedRequestId(id);
         setShowDetail(true);
+    }
+
+    const save = (e) => {
+        e.preventDefault();
+        
+
+        const selectedRequest = annualLeaveRequests.filter(request => (request.id === selectedRequestId))[0];
+        axios.put(CONFIG.API_PATHS.ADMIN.PUT_ANNUAL_REQUEST(type, username, password),
+        {
+            id: selectedRequest.id,
+            employeeId: selectedRequest.employeeId,
+            state: newState,
+            startDate: selectedRequest.startDate,
+            endDate: selectedRequest.endDate,
+            requestDate: selectedRequest.requestDate,
+            day: selectedRequest.day
+        })
+        .then(response => {
+            console.log(response);
+        })
+        .catch(error => {
+            console.log(error);
+ 
+        });
+
+
     }
 
 
@@ -110,15 +141,21 @@ export default function AnnualLeaveRequests() {
                         setShowDetail(false)
                     }} href="#">{"<-- Geri Dön"}</a>
                     <h2 style={{ marginTop: "20px" }}>İZİN TALEP DETAYI</h2>
-                    <form>
+                    <form onSubmit={save}>
                         <label className="form-label">İşlem tarihi: {dateLocaleFormatter(selectedRequest.requestDate)}</label>
                         <label className="form-label">Başlangıç tarihi: {dateLocaleFormatter(selectedRequest.startDate)}</label>
                         <label className="form-label">Bitiş tarihi: {dateLocaleFormatter(selectedRequest.endDate)}</label>
                         <label className="form-label">Gün sayısı: {selectedRequest.day}</label>
 
-                        <label className={`form-label state ${ANNUAL_LEAVE_REQUEST_STATE_STYLES[selectedRequest.state]}`}>{ANNUAL_LEAVE_REQUEST_STATE_TR[selectedRequest.state]}</label>
+                        <label className="form-label">Durum:</label>
+                        <select className="form-input" value={newState} onChange={changeStateForUpdate}>
+                            <option value="WAITING">ONAY BEKLİYOR</option>
+                            <option value="ACCEPTED">ONAYLANDI</option>
+                            <option value="DENIED">REDDEDİLDİ</option>
+                        </select>
+
                         <div className="button-group">
-                            <button type="submit" className="form-button">KAYDET</button>
+                            <button type="submit" className="form-button">{(loading) ? <img className="loading" src={loadingGifURL} /> : null} KAYDET</button>
                         </div>
                     </form>
                 </>

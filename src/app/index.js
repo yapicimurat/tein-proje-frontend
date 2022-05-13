@@ -62,8 +62,9 @@ const CONFIG = {
             GET_ANNUAL_REQUESTS: () => {
                 return `${BASE_URL}annual_request/`;
             },
-            PUT_ANNUAL_REQUEST: () => {
-                
+            PUT_ANNUAL_REQUEST: (type, username, password) => {
+                //save/{type}/{username}/{password}
+                return `${BASE_URL}annual_request/save/${type}/${username}/${password}`;
             }
         }
     },
