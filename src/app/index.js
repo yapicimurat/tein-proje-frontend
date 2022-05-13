@@ -5,14 +5,11 @@ BURADA REQUEST YAPILACAK BASE_URL VB. YAPILAR BULUNACAKTIR....
 //COMPONENTS
 import Menu from "../components/include/Menu";
 import Login from "../components/login/Login";
-import { default as AdminIndex } from "../components/admin/";
 import { default as AdminAnnualLeaveRequests } from "../components/admin/annualLeaveRequest/AnnualLeaveRequests";
-import { default as AdminAnnualLeaveRequestDetail } from "../components/admin/annualLeaveRequest/AnnualLeaveRequests";
+import { default as AdminAnnualLeaveRequestDetail } from "../components/admin/annualLeaveRequest/AnnualLeaveRequestDetail";
 
-import { default as EmployeeIndex } from "../components/employee/";
 import { default as EmployeeAnnualLeaveRequest } from "../components/employee/annualLeaveRequest/AnnualLeaveRequest";
 import { default as EmployeeAnnualLeaveRequests } from "../components/employee/annualLeaveRequest/AnnualLeaveRequests";
-import { default as EmployeeAnnualLeaveRequestDetail } from "../components/employee/annualLeaveRequest/AnnualLeaveRequestDetail";
 //END COMPONENTS
 
 const USER_TYPE = {
@@ -20,7 +17,7 @@ const USER_TYPE = {
     EMPLOYEE: 1
 };
 
-// private enum State{
+// private enum State{ -> java side
 //     WAITING,
 //     ACCEPTED,
 //     DENIED
@@ -40,17 +37,15 @@ const ANNUAL_LEAVE_REQUEST_STATE_TR = {
 
 
 const ROUTE_PATHS = {
-    LOGIN: "/",
+    LOGIN: "/login",
+    INDEX: "/",
     EMPLOYEE: {
-        INDEX: "/employee",
-        GET_ANNUAL_LEAVE_REQUEST: "/employee/annualLeaveRequest",
-        GET_ANNUAL_LEAVE_REQUESTS: "/employee/annualLeaveRequests",
-        GET_ANNUAL_LEAVE_REQUEST_DETAIL: "/employee/annualLeaveRequestDetail",
-        CREATE_ANNUAL_LEAVE_REQUEST: "employee/annualLeaveRequest"
+        ANNUAL_LEAVE_REQUEST: "/annualLeaveRequest",
+        ANNUAL_LEAVE_REQUESTS: "/annualLeaveRequests"
     },
-    ADMIN:{
-        INDEX: "/admin",
-        //DEVAMINI YAZICAM
+    ADMIN: {
+        ANNUAL_LEAVE_REQUESTS: "/annualLeaveRequest",
+        ANNUAL_LEAVE_REQUEST_DETAIL: "/annualLeaveRequestDetail"
     }
 };
 
@@ -75,79 +70,84 @@ const CONFIG = {
     },
     ROUTES: [
         {
-            path: "/", // hem adminin hemde personelin giris yapabilecegi login sayfasi (eger giris yapildiysa gerekli index'e yonlendirme yapar)
-            component: <Login />,
-            needAuth: false,
-            exact: true
-        },
-        {
-            path: "/login", // -> hem adminin hemde personelin giris yapabilecegi login sayfasi (eger giris yapildiysa gerekli index'e yonlendirme yapar)
-            component: <Login />,
-            needAuth: false,
-            exact: true
-        },
-        {
-            path: "/admin", // -> admin homepage goturur
-            component: <>
-                <Menu /><AdminIndex />
-            </>,
+            path: "/",
+            componentFunc: (type) => {
+                if (type === USER_TYPE.ADMIN) {
+                    return (
+                        <>
+                            <Menu /><AdminAnnualLeaveRequests />
+                        </>
+                    );
+                }
+                else if (type === USER_TYPE.EMPLOYEE) {
+                    return (
+                        <>
+                            <Menu /><EmployeeAnnualLeaveRequests />
+                        </>
+                    );
+                }
+            },
             needAuth: true,
             negativeComponent: <Login />,
             exact: true
         },
         {
-            path: "/admin/annualLeaveRequests", // -> adminin personeller tarafindan yapilan izin isteklerinin listesini gordugu sayfa
-            component: <>
-                <Menu /><AdminAnnualLeaveRequests />
-            </>,
+            path: "/login",
+            component: <Login />,
+            needAuth: false,
+            exact: true
+        },
+        // {
+        //     path: "/admin",
+        //     component: <>
+        //         <Menu /><AdminAnnualLeaveRequests />
+        //     </>,
+        //     needAuth: true,
+        //     negativeComponent: <Login />,
+        //     exact: true
+        // },
+        {
+            path: "/annualLeaveRequests",
+            componentFunc: (type) => {
+                if (type === USER_TYPE.ADMIN) {
+                    return (
+                        <>
+                            <Menu /><AdminAnnualLeaveRequests />
+                        </>
+                    );
+                }
+                else if (type === USER_TYPE.EMPLOYEE) {
+                    return (
+                        <>
+                            <Menu /><EmployeeAnnualLeaveRequests />
+                        </>
+                    );
+                }
+            },
             needAuth: true,
-            negativeComponent: <Login />, // giris yapili degilse yonlendirilecek component,
+            negativeComponent: <Login />,
             exact: true
         },
         {
-            path: "/admin/annualLeaveRequestDetail", // -> adminin personeller tarafindan yapilan izin isteklerinin listesini gordugu sayfa
-            component: <>
-                <Menu /><AdminAnnualLeaveRequestDetail />
-            </>,
+            path: "/annualLeaveRequestDetail",
+            component:
+                <>
+                    <Menu />
+                    <AdminAnnualLeaveRequestDetail />
+                </>,
             needAuth: true,
-            negativeComponent: <Login />, // giris yapili degilse yonlendirilecek component,
+            negativeComponent: <Login />,
             exact: true
         },
         {
-            path: "/employee",
-            component: <>
-                <Menu /><EmployeeIndex />
-            </>,
-            needAuth: true,
-            negativeComponent: <Login />, // giris yapili degilse yonlendirilecek component,
-            exact: true
-        },
-        {
-            path: "/employee/annualLeaveRequest", // -> personel'in izin talep yaptigi yer
+            path: "/annualLeaveRequest",
             component: <>
                 <Menu /><EmployeeAnnualLeaveRequest />
             </>,
             needAuth: true,
-            negativeComponent: <Login />, // giris yapili degilse yonlendirilecek component,
+            negativeComponent: <Login />,
             exact: true
-        },
-        {
-            path: "/employee/annualLeaveRequests", // -> personel'in izin talep yaptigi yer
-            component: <>
-                <Menu /><EmployeeAnnualLeaveRequests />
-            </>,
-            needAuth: true,
-            negativeComponent: <Login />, // giris yapili degilse yonlendirilecek component
-        },
-        {
-            path: "/employee/annualLeaveRequestDetail",
-            component: <>
-                <Menu /><EmployeeAnnualLeaveRequestDetail />
-            </>,
-            needAuth: true,
-            negativeComponent: <Login />, // giris yapili degilse yonlendirilecek component,
-            exact: true
-        }//SONRA NOT FOUND İÇİN BİR SAYFA VE YAPILANDIRMA EKLE....
+        }
 
     ]
 }

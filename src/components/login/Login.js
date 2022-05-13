@@ -48,15 +48,11 @@ export default function Login() {
                     alert(data.message);
                     if (data.data !== null) {
                         //giris basarili...
-                        if (loginType === USER_TYPE.EMPLOYEE) {
-                            //redux verilerini işle
-                            navigate(ROUTE_PATHS.EMPLOYEE.INDEX);
-                        } else if (loginType === USER_TYPE.ADMIN) {
-                            navigate(ROUTE_PATHS.ADMIN.INDEX);
-                        }
-
+                        navigate(ROUTE_PATHS.INDEX);
+                        
                         dispatch(setUser({
                             type: loginType,
+                            lastLogin: data.data.lastLogin,
                             userId: data.data.id,
                             username: data.data.username,
                             password: data.data.password,

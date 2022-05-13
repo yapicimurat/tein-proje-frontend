@@ -18,9 +18,28 @@ import CONFIG, { USER_TYPE } from "./app/";
 //END CONFIG
 
 
+
 export default function App() {
 
-  const { isLogged } = useSelector(state => state.userReducer);
+  const { isLogged, type } = useSelector(state => state.userReducer);
+
+
+  // if (route.componentFunc) {
+  //   return <Route
+  //     key={index}
+  //     exact={route.exact}
+  //     path={route.path}
+  //     element={route.componentFunc(type)}
+  //   />
+  // } else {
+  //   return <Route
+  //     key={index}
+  //     exact={route.exact}
+  //     path={route.path}
+  //     element={route.negativeComponent}
+  //   />
+  // }
+
 
 
   return (
@@ -28,23 +47,32 @@ export default function App() {
       {
         CONFIG.ROUTES.map((route, index) => {
           if ((route.needAuth && !isLogged)) {
+
             return <Route
-              key={index}
-              exact={route.exact}
-              path={route.path}
-              element={route.negativeComponent}
-            />
-          }else{
-            return <Route
-              key={index}
-              exact={route.exact}
-              path={route.path}
-              element={route.component}
-            />
+                key={index}
+                exact={route.exact}
+                path={route.path}
+                element={route.negativeComponent}
+              />
+
+          } else if(route.needAuth && isLogged){
+            if (route.componentFunc) {
+              return <Route
+                key={index}
+                exact={route.exact}
+                path={route.path}
+                element={route.componentFunc(type)}
+              />
+            } else {
+              return <Route
+                key={index}
+                exact={route.exact}
+                path={route.path}
+                element={route.component}
+              />
+            }
+
           }
-
-          
-
         })
       }
 
@@ -53,5 +81,3 @@ export default function App() {
 
 
 }
-
-
