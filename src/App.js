@@ -24,24 +24,6 @@ export default function App() {
   const { isLogged, type } = useSelector(state => state.userReducer);
 
 
-  // if (route.componentFunc) {
-  //   return <Route
-  //     key={index}
-  //     exact={route.exact}
-  //     path={route.path}
-  //     element={route.componentFunc(type)}
-  //   />
-  // } else {
-  //   return <Route
-  //     key={index}
-  //     exact={route.exact}
-  //     path={route.path}
-  //     element={route.negativeComponent}
-  //   />
-  // }
-
-
-
   return (
     <Routes>
       {

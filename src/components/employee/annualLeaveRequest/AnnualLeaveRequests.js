@@ -65,7 +65,7 @@ export default function AnnualLeaveRequests() {
                 <div className="table-body">
                     {(loading) ? <img style={{ width: "72px", height: "72px", margin: "0 auto" }} className="loading" src={loadingGifURL} /> : null}
                     {
-                        annualLeaveRequests.map((request, index) => {
+                       (annualLeaveRequests.length > 0) ? annualLeaveRequests.map((request, index) => {
                             return (request.state === filter || filter === "ALL") ? (
                                 <div key={index} className="table-row">
                                     <ul>
@@ -77,13 +77,11 @@ export default function AnnualLeaveRequests() {
                                     </ul>
                                 </div>
                             ) : null;
-                        })
+                        }) : (
+                            <p style={{display: "block", margin: "10px auto 0px auto",}}>Herhangi bir izin talebiniz bulunmamaktadır.</p>
+                        )
                         
                     }
-
-                </div>
-
-                <div className="table-footer">
 
                 </div>
             </div>

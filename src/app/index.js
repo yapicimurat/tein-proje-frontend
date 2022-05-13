@@ -1,6 +1,3 @@
-/*
-BURADA REQUEST YAPILACAK BASE_URL VB. YAPILAR BULUNACAKTIR....
-*/
 
 //COMPONENTS
 import Menu from "../components/include/Menu";
@@ -16,12 +13,6 @@ const USER_TYPE = {
     ADMIN: 0,
     EMPLOYEE: 1
 };
-
-// private enum State{ -> java side
-//     WAITING,
-//     ACCEPTED,
-//     DENIED
-// }
 
 const ANNUAL_LEAVE_REQUEST_STATE_STYLES = {
     "WAITING": "state-waiting",
@@ -60,11 +51,19 @@ const CONFIG = {
             GET_ANNUAL_REQUEST_BY_EMPLOYEE_ID: (employeeId) => {
                 return `${BASE_URL}annual_request/getAllByEmployeeId/${employeeId}/`;
             },
+            POST_REQUEST: (type, username, password) => {
+                return `${BASE_URL}annual_request/create/${type}/${username}/${password}`;
+            }
+        },
+        ADMIN: {
+            LOGIN: (username, password) => {
+                return `${BASE_URL}admin/login/${username}/${password}`;
+            },
             GET_ANNUAL_REQUESTS: () => {
                 return `${BASE_URL}annual_request/`;
             },
-            POST_REQUEST: (type, username, password) => {
-                return `${BASE_URL}annual_request/create/${type}/${username}/${password}`;
+            PUT_ANNUAL_REQUEST: () => {
+                
             }
         }
     },
@@ -97,15 +96,6 @@ const CONFIG = {
             needAuth: false,
             exact: true
         },
-        // {
-        //     path: "/admin",
-        //     component: <>
-        //         <Menu /><AdminAnnualLeaveRequests />
-        //     </>,
-        //     needAuth: true,
-        //     negativeComponent: <Login />,
-        //     exact: true
-        // },
         {
             path: "/annualLeaveRequests",
             componentFunc: (type) => {

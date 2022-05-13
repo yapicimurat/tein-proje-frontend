@@ -15,8 +15,7 @@ const initialState = {
     isLogged: false,
     userId: null,
     username: "",
-    password: "",
-    lastLogin: null
+    password: ""
 };
 
 export const userSlice = createSlice({

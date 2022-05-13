@@ -52,7 +52,6 @@ export default function Login() {
                         
                         dispatch(setUser({
                             type: loginType,
-                            lastLogin: data.data.lastLogin,
                             userId: data.data.id,
                             username: data.data.username,
                             password: data.data.password,

@@ -11,7 +11,7 @@ import { setUser } from "../../features/user";
 export default function Menu() {
 
     //type -> admin or employee 
-    const { type, username, lastLogin } = useSelector(state => state.userReducer);
+    const { type, username } = useSelector(state => state.userReducer);
     const dispatch = useDispatch();
 
     const logout = () => {
@@ -74,7 +74,7 @@ export default function Menu() {
         <header>
             <div className="header-info">
                 <p className="menu-welcome">Hoşgeldiniz, {username}</p>
-                <small style={{fontSize: "10px", color: "#ff0000", fontStyle: "italic"}}>{(type === 0) ? "[ADMIN]" : "[PERSONEL]"}</small><small style={{fontSize: "10px", fontStyle: "italic"}}> - Last Login: {new Date(lastLogin).toLocaleDateString()}</small>
+                <small style={{fontSize: "10px", color: "#ff0000", fontStyle: "italic"}}>{(type === 0) ? "[ADMIN]" : "[PERSONEL]"}</small>
             </div>
             <nav className="menu">
                 {menu}
