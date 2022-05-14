@@ -18,7 +18,14 @@ const ANNUAL_LEAVE_REQUEST_STATE_STYLES = {
     "WAITING": "state-waiting",
     "ACCEPTED": "state-accepted",
     "DENIED": "state-denied"
+
 }
+
+const ANNUAL_LEAVE_REQUEST_STATES = [
+    "WAITING",
+    "ACCEPTED",
+    "DENIED"
+];
 
 const ANNUAL_LEAVE_REQUEST_STATE_TR = {
     "WAITING": "ONAY BEKLİYOR",
@@ -53,6 +60,9 @@ const CONFIG = {
             },
             POST_REQUEST: (type, username, password) => {
                 return `${BASE_URL}annual_request/create/${type}/${username}/${password}`;
+            },
+            GET_EMPLOYEE_BY_ID: (employeeId) => {
+                return `${BASE_URL}employee/getEmployeeById/${employeeId}`;
             }
         },
         ADMIN: {
@@ -139,7 +149,6 @@ const CONFIG = {
             negativeComponent: <Login />,
             exact: true
         }
-
     ]
 }
 
@@ -150,6 +159,7 @@ export {
     USER_TYPE,
     ROUTE_PATHS,
     BASE_URL,
+    ANNUAL_LEAVE_REQUEST_STATES,
     ANNUAL_LEAVE_REQUEST_STATE_STYLES,
     ANNUAL_LEAVE_REQUEST_STATE_TR
 };

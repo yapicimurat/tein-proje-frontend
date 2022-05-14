@@ -41,7 +41,7 @@ export default function Login() {
             alert("Lütfen alanları eksiksiz giriniz.");
         } else {
             setLoading(true);
-            axios.get(CONFIG.API_PATHS.EMPLOYEE.LOGIN(username, password))
+            axios.get((loginType === USER_TYPE.EMPLOYEE) ? CONFIG.API_PATHS.EMPLOYEE.LOGIN(username, password) : CONFIG.API_PATHS.ADMIN.LOGIN(username, password))
                 .then(response => {
                     setLoading(false);
                     const data = response.data;
@@ -61,7 +61,7 @@ export default function Login() {
                 })
                 .catch(error => {
                     setLoading(false);
-                    alert("Bir hata meydana geldi. Lütfen sonra tekrar deneyiniz.");
+                    alert("Bir hata meydana geldi. Lütfen daha sonra tekrar deneyiniz.");
                 });
 
         }

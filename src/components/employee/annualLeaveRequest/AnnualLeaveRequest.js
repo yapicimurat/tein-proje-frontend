@@ -39,16 +39,16 @@ export default function AnnualLeaveRequest() {
         const asDateEndDate = new Date(endDate);
 
         //sonuc milisaniye olarak veriliyor!!!
-        const diff = (asDateEndDate - asDateStartDate);
+        const diff =  Math.ceil((asDateEndDate - asDateStartDate) / (1000 * 60 * 60 * 24));
 
         if (diff <= 0) {
             alert("İzin başlangıç tarihi, izin bitiş tarihinden önce olmalıdır.");
-
             asDateEndDate.setDate(asDateEndDate.getDate() - 1);
-
+            
             setStartDate(dateFormatter(asDateEndDate));
-
         } else {
+            setRequestDay(diff);
+
             if (start)
                 setStartDate(start);
             if (end)
@@ -74,7 +74,6 @@ export default function AnnualLeaveRequest() {
                 day = 1;
 
 
-            //sınırlama -> sistemin hataya düşmemesi için...
             if (day > 1000)
                 day = 1000;
             asDateStartDate.setDate(asDateStartDate.getDate() + parseInt(day));

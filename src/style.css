@@ -299,9 +299,13 @@ form{
     display: flex;
     flex-direction: row;
     width: 100%;
-    height: 35px;
+    min-height: 35px;
+    height: fit-content;
+    max-height: 75px;
     border-bottom: 1px solid #888;
     cursor: pointer;
+    overflow: auto;
+    white-space: pre-line;
 }
 .table-row:hover{
     background-color: #dedede!important;
@@ -361,4 +365,28 @@ form{
     width: 16px;
     height: 16px;
     
+}
+
+.employee-name{
+    font-style: italic;
+    font-weight: 400;
+    display: inline-block;
+    border: 1px solid #b8daff;
+    border-radius: 25px;
+    padding: 5px;
+    background-color: #cce5ff;
+}
+
+.personel-information{
+    width: 350px;
+    height: 50px;
+    border: 1px solid #888;
+    background-color: #fff;
+    text-align: center;
+}
+
+.not-found-page{
+    width: 100%;
+    height: fit-content;
+    text-align: center;
 }

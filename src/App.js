@@ -9,6 +9,7 @@ import { setReducer } from "./features/user/";
 
 //COMPONENTS
 import Login from "./components/login/Login";
+import NotFound from "./components/NotFound";
 //END COMPONENTS
 
 
@@ -31,13 +32,13 @@ export default function App() {
           if ((route.needAuth && !isLogged)) {
 
             return <Route
-                key={index}
-                exact={route.exact}
-                path={route.path}
-                element={route.negativeComponent}
-              />
+              key={index}
+              exact={route.exact}
+              path={route.path}
+              element={route.negativeComponent}
+            />
 
-          } else if(route.needAuth && isLogged){
+          } else if (route.needAuth && isLogged) {
             if (route.componentFunc) {
               return <Route
                 key={index}
@@ -57,7 +58,10 @@ export default function App() {
           }
         })
       }
-
+      <Route
+        path="*"
+        element={<NotFound/>}
+      />
     </Routes>
   );
 

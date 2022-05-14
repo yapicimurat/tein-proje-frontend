@@ -1,7 +1,7 @@
 
 import { useSelector } from "react-redux";
 import { USER_TYPE } from "../../app/";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import "../../style.css";
 
 import { useDispatch } from "react-redux";
@@ -13,6 +13,7 @@ export default function Menu() {
     //type -> admin or employee 
     const { type, username } = useSelector(state => state.userReducer);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const logout = () => {
 
@@ -22,7 +23,7 @@ export default function Menu() {
             username: "",
             password: ""
         }));
-
+        navigate("/");
 
     };
 

@@ -11,18 +11,6 @@ const dateLocaleFormatter = (date) => {
 };
 
 
-
-/*
-localStorage.setItem("lastname", "Smith");
-localStorage.getItem("lastname");
-
-*/
-//LOCALSTORAGE'E KULLANICININ GİRİŞ BİLGİLERİ SAKLANACAK, FAKAT HER GIRDIGINDE
-//KONTROL EDİLME GİBİ BİR DURUM OLABİLİR... BUNU DÜŞÜN...
-const setLocalStorage = () => {
-    //localStorage
-};
-
 export {
     dateFormatter,
     dateLocaleFormatter

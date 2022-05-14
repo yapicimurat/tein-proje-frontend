@@ -54,7 +54,7 @@ export default function AnnualLeaveRequests() {
             <div className="table">
                 <div className="table-head">
                     <ul>
-                        <li>TARİH</li>
+                        <li>İŞLEM TARİHİ</li>
                         <li>BAŞ. TARİHİ</li>
                         <li>BİT. TARİHİ</li>
                         <li>GÜN SAYISI</li>

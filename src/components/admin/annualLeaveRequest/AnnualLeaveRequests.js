@@ -3,7 +3,7 @@ import SectionContent from "../../SectionContent"
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import CONFIG, { ANNUAL_LEAVE_REQUEST_STATE_STYLES, ANNUAL_LEAVE_REQUEST_STATE_TR } from "../../../app/";
+import CONFIG, { ANNUAL_LEAVE_REQUEST_STATES, ANNUAL_LEAVE_REQUEST_STATE_STYLES, ANNUAL_LEAVE_REQUEST_STATE_TR } from "../../../app/";
 import "../../../style.css";
 import loadingGifURL from "../../../assets/img/loading.gif";
 import { dateLocaleFormatter } from "../../../app/helper";
@@ -14,29 +14,32 @@ export default function AnnualLeaveRequests() {
     const [loading, setLoading] = useState(true);
     const {userId, type, username, password} = useSelector(state => state.userReducer);
     const [filter, setFilter] = useState("ALL");
-
+    const [detailEmployee, setDetailEmployee] = useState(null);
 
     const [showDetail, setShowDetail] = useState(false);
     const [selectedRequestId, setSelectedRequestId] = useState(-1);
     const [newState, setNewState] = useState("WAITING");
 
     useEffect(() => {
-        axios.get(CONFIG.API_PATHS.ADMIN.GET_ANNUAL_REQUESTS())
-            .then(response => {
-                const { error, message, data } = response.data;
-                if (error) setIsError(true);
-                else {
-                    setLoading(false);
-                    setAnnualLeaveRequests(data);
-                }
-
-            })
-            .catch(error => {
-                setLoading(false);
-                if (error) setIsError(true);
-            });
-
+        fetchRequests();
     }, []);
+
+    const fetchRequests = () => {
+        axios.get(CONFIG.API_PATHS.ADMIN.GET_ANNUAL_REQUESTS())
+        .then(response => {
+            const { error, message, data } = response.data;
+            if (error) setIsError(true);
+            else {
+                setLoading(false);
+                setAnnualLeaveRequests(data);
+            }
+
+        })
+        .catch(error => {
+            setLoading(false);
+            if (error) setIsError(true);
+        });
+    }
 
     const changeHandler = (e) => {
         setFilter(e.target.value);
@@ -48,15 +51,28 @@ export default function AnnualLeaveRequests() {
     }
 
 
-    const detail = (id) => {
-        setSelectedRequestId(id);
-        setShowDetail(true);
+    const detail = (id,employeeId) => {
+        
+        axios.get(CONFIG.API_PATHS.EMPLOYEE.GET_EMPLOYEE_BY_ID(employeeId))
+        .then(res => {
+            const {data} = res;
+            setSelectedRequestId(id);
+            setShowDetail(true);
+
+            setDetailEmployee(data.data);
+        })
+        .catch(err => {
+            alert("Bir hata meydana geldi.");
+        });
     }
+
+   
+
 
     const save = (e) => {
         e.preventDefault();
         
-
+        setLoading(true);
         const selectedRequest = annualLeaveRequests.filter(request => (request.id === selectedRequestId))[0];
         axios.put(CONFIG.API_PATHS.ADMIN.PUT_ANNUAL_REQUEST(type, username, password),
         {
@@ -69,11 +85,15 @@ export default function AnnualLeaveRequests() {
             day: selectedRequest.day
         })
         .then(response => {
-            console.log(response);
+            const {data} = response;
+            setLoading(false);
+            fetchRequests();
+            alert(data.message);
+
         })
         .catch(error => {
+            setLoading(false);
             console.log(error);
- 
         });
 
 
@@ -94,7 +114,7 @@ export default function AnnualLeaveRequests() {
                 <div className="table">
                     <div className="table-head">
                         <ul>
-                            <li>TARİH</li>
+                            <li>İŞLEM TARİHİ</li>
                             <li>BAŞ. TARİHİ</li>
                             <li>BİT. TARİHİ</li>
                             <li>GÜN SAYISI</li>
@@ -116,7 +136,7 @@ export default function AnnualLeaveRequests() {
                                             <li>{request.day}</li>
                                             <li className={`state ${ANNUAL_LEAVE_REQUEST_STATE_STYLES[request.state]}`}>{ANNUAL_LEAVE_REQUEST_STATE_TR[request.state]}</li>
                                             <li><a onClick={() => {
-                                                detail(request.id)
+                                                detail(request.id, request.employeeId)
                                             }} href="#">DETAYA GİT</a></li>
                                         </ul>
                                     </div>
@@ -133,6 +153,8 @@ export default function AnnualLeaveRequests() {
 
         } />
     } else {
+        //DETAY KISMI
+
         const selectedRequest = annualLeaveRequests.filter(request => (request.id === selectedRequestId))[0];
         return (
             <SectionContent content={
@@ -141,6 +163,7 @@ export default function AnnualLeaveRequests() {
                         setShowDetail(false)
                     }} href="#">{"<-- Geri Dön"}</a>
                     <h2 style={{ marginTop: "20px" }}>İZİN TALEP DETAYI</h2>
+                    <span>Personel: </span><h4 className="employee-name">{detailEmployee.name} {detailEmployee.surname}</h4>
                     <form onSubmit={save}>
                         <label className="form-label">İşlem tarihi: {dateLocaleFormatter(selectedRequest.requestDate)}</label>
                         <label className="form-label">Başlangıç tarihi: {dateLocaleFormatter(selectedRequest.startDate)}</label>
@@ -148,10 +171,20 @@ export default function AnnualLeaveRequests() {
                         <label className="form-label">Gün sayısı: {selectedRequest.day}</label>
 
                         <label className="form-label">Durum:</label>
-                        <select className="form-input" value={newState} onChange={changeStateForUpdate}>
-                            <option value="WAITING">ONAY BEKLİYOR</option>
-                            <option value="ACCEPTED">ONAYLANDI</option>
-                            <option value="DENIED">REDDEDİLDİ</option>
+                        <select className="form-input" onChange={changeStateForUpdate}>
+                            <option value={selectedRequest.state}>{ANNUAL_LEAVE_REQUEST_STATE_TR[selectedRequest.state]}</option>
+
+                            {
+                                ANNUAL_LEAVE_REQUEST_STATES.map((state, index) => {
+                                    return (state !== selectedRequest.state) ? (
+                                        <option key={index} value={state}>{ANNUAL_LEAVE_REQUEST_STATE_TR[state]}</option>
+                                    ) : null
+                                   
+                                })
+                            }
+
+                           
+                            
                         </select>
 
                         <div className="button-group">
